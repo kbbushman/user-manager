@@ -1,12 +1,22 @@
-import { Utils } from './../Server/Utils';
 import { createServer, IncomingMessage, ServerResponse } from 'http';
+import { Utils } from './../Server/Utils';
+import { LoginHandler } from './../Server/LoginHandler';
 
 export class Server {
   public createServer() {
-    createServer((req: IncomingMessage, res: ServerResponse) => {
+    createServer(async (req: IncomingMessage, res: ServerResponse) => {
       console.log(`Request from: ${req.url}`);
       const basePath = Utils.getUrlBasePath(req);
-      console.log('Base Path =', basePath);
+
+      switch (basePath) {
+        case 'login':
+          await new LoginHandler(req, res).handleRequest();
+          break;
+
+        default:
+          break;
+      }
+
       res.end();
     }).listen(4000);
 
