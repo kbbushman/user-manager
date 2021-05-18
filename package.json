@@ -1,0 +1,26 @@
+{
+  "name": "user-manager",
+  "version": "1.0.0",
+  "description": "User Manager API built with Node and TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/Launcher.ts"
+  },
+  "author": "Kenneth Bushman",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^15.3.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kbbushman/user-manager.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/kbbushman/user-manager/issues"
+  },
+  "homepage": "https://github.com/kbbushman/user-manager#readme"
+}
