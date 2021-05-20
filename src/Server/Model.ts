@@ -6,3 +6,11 @@ export interface Account {
 export interface Handler {
   handleRequest(): void;
 }
+
+export interface SessionToken {
+  tokenId: string;
+}
+
+export interface TokenGenerator {
+  generateToken(account: Account): Promise<SessionToken | undefined>;
+}
