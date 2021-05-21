@@ -17,12 +17,16 @@ export class LoginHandler implements Handler {
   }
 
   public async handleRequest(): Promise<void> {
-    const body = await this.getRequestBody();
-    const sessionToken = await this.tokenGenerator.generateToken(body);
-    if (sessionToken) {
-      this.res.write('Valid credentials');
-    } else {
-      this.res.write('Invalid credentials');
+    try {
+      const body = await this.getRequestBody();
+      const sessionToken = await this.tokenGenerator.generateToken(body);
+      if (sessionToken) {
+        this.res.write('Valid credentials');
+      } else {
+        this.res.write('Invalid credentials');
+      }
+    } catch (err) {
+      this.res.write('Error: ' + err.message);
     }
   }
 
