@@ -13,7 +13,9 @@
     "ts-node": "^9.1.1",
     "typescript": "^4.2.4"
   },
-  "dependencies": {},
+  "dependencies": {
+    "nedb": "^1.8.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kbbushman/user-manager.git"
