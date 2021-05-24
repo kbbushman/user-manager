@@ -1,3 +1,4 @@
+import { HTTP_CODES } from './../Shared/Model';
 import { IncomingMessage, ServerResponse } from 'http';
 import { Account, Handler, TokenGenerator } from './Model';
 
@@ -21,9 +22,14 @@ export class LoginHandler implements Handler {
       const body = await this.getRequestBody();
       const sessionToken = await this.tokenGenerator.generateToken(body);
       if (sessionToken) {
-        this.res.write('Valid credentials');
+        this.res.statusCode = HTTP_CODES.CREATED;
+        this.res.writeHead(HTTP_CODES.CREATED, {
+          'Content-Type': 'application/json',
+        });
+        this.res.write(JSON.stringify(sessionToken));
       } else {
-        this.res.write('Invalid credentials');
+        this.res.statusCode = HTTP_CODES.NOT_FOUND;
+        this.res.write('Invalid username and/or password');
       }
     } catch (err) {
       this.res.write('Error: ' + err.message);
