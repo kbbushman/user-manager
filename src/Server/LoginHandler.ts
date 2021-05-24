@@ -1,4 +1,4 @@
-import { HTTP_CODES } from './../Shared/Model';
+import { HTTP_CODES, HTTP_METHODS } from './../Shared/Model';
 import { IncomingMessage, ServerResponse } from 'http';
 import { Account, Handler, TokenGenerator } from './Model';
 
@@ -18,6 +18,20 @@ export class LoginHandler implements Handler {
   }
 
   public async handleRequest(): Promise<void> {
+    switch (this.req.method) {
+      case HTTP_METHODS.POST:
+        await this.handlePost();
+      default:
+        this.handleNotFound();
+    }
+  }
+
+  private async handleNotFound() {
+    this.res.statusCode = HTTP_CODES.NOT_FOUND;
+    this.res.write('Not Found');
+  }
+
+  private async handlePost() {
     try {
       const body = await this.getRequestBody();
       const sessionToken = await this.tokenGenerator.generateToken(body);
