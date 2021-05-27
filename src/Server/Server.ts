@@ -1,3 +1,4 @@
+import { UsersHandler } from './UsersHandler';
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 import { Utils } from './../Server/Utils';
 import { LoginHandler } from './../Server/LoginHandler';
@@ -15,7 +16,9 @@ export class Server {
         case 'login':
           await new LoginHandler(req, res, this.authorizer).handleRequest();
           break;
-
+        case 'users':
+          await new UsersHandler(req, res).handleRequest();
+          break;
         default:
           break;
       }
