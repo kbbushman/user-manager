@@ -2,19 +2,16 @@ import { Utils } from './Utils';
 import { HTTP_METHODS, HTTP_CODES } from './../Shared/Model';
 import { UserDBAccess } from './../User/UsersDBAccess';
 import { IncomingMessage, ServerResponse } from 'http';
-import { Handler } from "./Model";
+import { BaseRequestHandler } from './BaseRequestHandler';
 
-export class UsersHandler implements Handler {
-  private req: IncomingMessage;
-  private res: ServerResponse;
+export class UsersHandler extends BaseRequestHandler {
   private usersDBAccess: UserDBAccess = new UserDBAccess();
 
   public constructor(
     req: IncomingMessage,
     res: ServerResponse,
   ) {
-    this.req = req;
-    this.res = res;
+    super(req, res);
   }
 
   async handleRequest(): Promise<void> {
@@ -33,10 +30,5 @@ export class UsersHandler implements Handler {
     const parsedUrl = Utils.getUrlParameters(this.req);
     console.log(parsedUrl?.get('id'));
     console.log(typeof parsedUrl);
-  }
-
-  private async handleNotFound() {
-    this.res.statusCode = HTTP_CODES.NOT_FOUND;
-    this.res.write('Not Found');
   }
 }
