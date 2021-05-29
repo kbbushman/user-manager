@@ -15,7 +15,7 @@ export abstract class BaseRequestHandler {
 
   abstract handleRequest(): Promise<void>
    
-  protected async handleNotFound() {
+  protected handleNotFound() {
     this.res.statusCode = HTTP_CODES.NOT_FOUND;
     this.res.write('Not Found');
   }
