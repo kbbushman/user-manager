@@ -17,7 +17,7 @@ export class UsersHandler extends BaseRequestHandler {
   async handleRequest(): Promise<void> {
     switch (this.req.method) {
       case  HTTP_METHODS.GET:
-        this.handleGet();
+        await this.handleGet();
         break;
     
       default:
@@ -28,7 +28,15 @@ export class UsersHandler extends BaseRequestHandler {
 
   private async handleGet() {
     const parsedUrl = Utils.getUrlParameters(this.req);
-    console.log(parsedUrl?.get('id'));
-    console.log(typeof parsedUrl);
+    if (parsedUrl) {
+      const userId = parsedUrl.get('id');
+      const user = await this.usersDBAccess.getUserById(userId as string);
+      if (user) {
+        this.res.writeHead(HTTP_CODES.OK, { 'Content-Type': 'application/json' });
+        this.res.write(JSON.stringify(user));
+      } else {
+        this.handleNotFound();
+      }
+    }
   }
 }
