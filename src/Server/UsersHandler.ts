@@ -27,11 +27,15 @@ export class UsersHandler extends BaseRequestHandler {
     const parsedUrl = Utils.getUrlParameters(this.req);
     if (parsedUrl) {
       const userId = parsedUrl.get('id');
-      const user = await this.usersDBAccess.getUserById(userId as string);
-      if (user) {
-        this.respondJsonObject(HTTP_CODES.OK, user);
+      if (userId) {
+        const user = await this.usersDBAccess.getUserById(userId);
+        if (user) {
+          this.respondJsonObject(HTTP_CODES.OK, user);
+        } else {
+          this.handleNotFound();
+        }
       } else {
-        this.handleNotFound();
+        this.respondBadRequest(`No user found with id ${userId}`);
       }
     }
   }
