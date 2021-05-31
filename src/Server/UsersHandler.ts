@@ -1,6 +1,6 @@
 import { TokenValidator } from './Model';
 import { Utils } from './Utils';
-import { HTTP_METHODS, HTTP_CODES } from './../Shared/Model';
+import { HTTP_METHODS, HTTP_CODES, AccessRight } from './../Shared/Model';
 import { UserDBAccess } from './../User/UsersDBAccess';
 import { IncomingMessage, ServerResponse } from 'http';
 import { BaseRequestHandler } from './BaseRequestHandler';
@@ -44,6 +44,20 @@ export class UsersHandler extends BaseRequestHandler {
       } else {
         this.respondBadRequest(`User ID no provided in request`);
       }
+    }
+  }
+
+  public async operationAuthorized(operation: AccessRight) {
+    const tokenId = this.req.headers.authorization;
+    if (tokenId) {
+      const tokenRights = await this.tokenValidator.validateToken(tokenId);
+      if (tokenRights.accessRights.includes(operation)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 }
