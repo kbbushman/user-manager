@@ -35,7 +35,7 @@ export class UsersHandler extends BaseRequestHandler {
           this.handleNotFound();
         }
       } else {
-        this.respondBadRequest(`No user found with id ${userId}`);
+        this.respondBadRequest(`User ID no provided in request`);
       }
     }
   }
