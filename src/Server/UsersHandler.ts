@@ -1,3 +1,4 @@
+import { TokenValidator } from './Model';
 import { Utils } from './Utils';
 import { HTTP_METHODS, HTTP_CODES } from './../Shared/Model';
 import { UserDBAccess } from './../User/UsersDBAccess';
@@ -6,9 +7,15 @@ import { BaseRequestHandler } from './BaseRequestHandler';
 
 export class UsersHandler extends BaseRequestHandler {
   private usersDBAccess: UserDBAccess = new UserDBAccess();
+  private tokenValidator: TokenValidator;
 
-  public constructor(req: IncomingMessage, res: ServerResponse) {
+  public constructor(
+    req: IncomingMessage,
+    res: ServerResponse,
+    tokenValidator: TokenValidator
+  ) {
     super(req, res);
+    this.tokenValidator = tokenValidator;
   }
 
   async handleRequest(): Promise<void> {
