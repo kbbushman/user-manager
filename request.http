@@ -2,8 +2,9 @@
 # Content-Type: application/json
 
 # {
-#   "username": "test@test.com",
+#   "username": "user1",
 #   "password": "1234"
 # }
 
-GET http://localhost:4000/users?id=2
+GET http://localhost:4000/users?id=2804yshjd
+Authorization: j8v4uyjqlmc
