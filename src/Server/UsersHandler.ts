@@ -1,6 +1,6 @@
 import { TokenValidator } from './Model';
 import { Utils } from './Utils';
-import { HTTP_METHODS, HTTP_CODES, AccessRight } from './../Shared/Model';
+import { HTTP_METHODS, HTTP_CODES, AccessRight, User } from './../Shared/Model';
 import { UserDBAccess } from './../User/UsersDBAccess';
 import { IncomingMessage, ServerResponse } from 'http';
 import { BaseRequestHandler } from './BaseRequestHandler';
@@ -23,10 +23,23 @@ export class UsersHandler extends BaseRequestHandler {
       case HTTP_METHODS.GET:
         await this.handleGet();
         break;
-
+      case HTTP_METHODS.PUT:
+        await this.handlePut();
       default:
         this.handleNotFound();
         break;
+    }
+  }
+
+  private async handlePut() {
+    const operationAuthorized = await this.operationAuthorized(
+      AccessRight.READ
+    );
+    
+    if (operationAuthorized) {
+      const user: User = await this.getRequestBody();
+      await this.usersDBAccess.addUser(user);
+      this.respondText(HTTP_CODES.CREATED, `User ${user.name} created`);
     }
   }
 
