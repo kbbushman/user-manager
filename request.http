@@ -9,3 +9,16 @@ Content-Type: application/json
 
 GET http://localhost:4000/users?id=2804yshjd
 Authorization: 9x753iqkwg
+
+###
+
+PUT http://localhost:4000/users
+Authorization: 9x753iqkwg
+Content-Type: application/json
+
+{
+  "age": 33,
+  "email": "karensmith@gmail.com",
+  "name": "Karen Smith",
+  "workingPosition": 3
+}
