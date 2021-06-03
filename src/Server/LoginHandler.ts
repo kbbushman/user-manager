@@ -19,6 +19,7 @@ export class LoginHandler extends BaseRequestHandler {
     switch (this.req.method) {
       case HTTP_METHODS.POST:
         await this.handlePost();
+        break;
       default:
         this.handleNotFound();
     }

@@ -25,6 +25,7 @@ export class UsersHandler extends BaseRequestHandler {
         break;
       case HTTP_METHODS.PUT:
         await this.handlePut();
+        break;
       default:
         this.handleNotFound();
         break;
