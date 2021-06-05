@@ -36,11 +36,17 @@ export class UsersHandler extends BaseRequestHandler {
     const operationAuthorized = await this.operationAuthorized(
       AccessRight.READ
     );
-    
+
     if (operationAuthorized) {
-      const user: User = await this.getRequestBody();
-      await this.usersDBAccess.addUser(user);
-      this.respondText(HTTP_CODES.CREATED, `User ${user.name} created`);
+      try {
+        const user: User = await this.getRequestBody();
+        await this.usersDBAccess.addUser(user);
+        this.respondText(HTTP_CODES.CREATED, `User ${user.name} created`);
+      } catch (err) {
+        this.respondBadRequest(err.message);
+      }
+    } else {
+      this.respondUnauthorized('Missing or invalid credentials');
     }
   }
 
