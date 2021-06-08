@@ -59,6 +59,7 @@ export class UsersHandler extends BaseRequestHandler {
       const parsedUrl = Utils.getUrlParameters(this.req);
       if (parsedUrl) {
         const userId = parsedUrl.get('id');
+        const name = parsedUrl.get('name');
         if (userId) {
           const user = await this.usersDBAccess.getUserById(userId);
           if (user) {
@@ -66,8 +67,11 @@ export class UsersHandler extends BaseRequestHandler {
           } else {
             this.handleNotFound();
           }
+        } else if (name) {
+          const users = await this.usersDBAccess.getUsersByName(name);
+          this.respondJsonObject(HTTP_CODES.OK, users);
         } else {
-          this.respondBadRequest(`User ID no provided in request`);
+          this.respondBadRequest(`User ID or name not provided in request`);
         }
       }
     } else {
