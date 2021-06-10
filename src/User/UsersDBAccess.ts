@@ -40,6 +40,12 @@ export class UserDBAccess {
     });
   }
 
+  public async deleteUser(userId: string): Promise<boolean> {
+    const operationSuccess = await this.deleteUserFromDb(userId);
+    this.nedb.loadDatabase();
+    return operationSuccess;
+  }
+
   private async deleteUserFromDb(userId: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.nedb.remove(
