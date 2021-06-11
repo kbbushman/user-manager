@@ -1,0 +1,153 @@
+openapi: 3.0.0
+info:
+  description: User secure server
+  title: User secure server API description
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+security:
+  - basicAuth: []
+paths:
+  /login:
+    post:
+      tags:
+        - login
+      summary: generates a session token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: session token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessRights:
+                    type: array
+                    items:
+                      type: number
+                  expirationTime:
+                    type: object
+                  username:
+                    type: string
+                  valid:
+                    type: boolean
+                  tokenId:
+                    type: string
+        '404':
+          description: user not found
+  /users/{id}:
+    get:
+      tags:
+        - users
+      summary: Returns a user by id
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Forbidden
+    delete:
+      tags:
+        - users
+      summary: Deletes a user by id
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Forbidden
+  /users/{name}:
+    get:
+      tags:
+        - users
+      summary: Returns users by name
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersArray'
+        '401':
+          description: Forbidden
+  /users:
+    post:
+      tags:
+        - users
+      summary: Creates a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: user created
+        '401':
+          description: Unauthorized
+components:
+  securitySchemes:
+    basicAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        age:
+          type: integer
+        email:
+          type: string
+        workingPosition:
+          type: integer
+    UsersArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
