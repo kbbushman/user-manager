@@ -10,6 +10,7 @@ export class Server {
   public createServer() {
     createServer(async (req: IncomingMessage, res: ServerResponse) => {
       console.log(`Request from: ${req.url}`);
+      this.addCorsHeader(res);
       const basePath = Utils.getUrlBasePath(req);
 
       switch (basePath) {
@@ -27,5 +28,9 @@ export class Server {
     }).listen(4000);
 
     console.log('Server listening on port 4000');
+  }
+
+  private addCorsHeader(res: ServerResponse) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
   }
 }
