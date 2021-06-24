@@ -11,7 +11,7 @@ export class LoginHandler extends BaseRequestHandler {
     res: ServerResponse,
     tokenGenerator: TokenGenerator
   ) {
-    super(req, res)
+    super(req, res);
     this.tokenGenerator = tokenGenerator;
   }
 
@@ -19,6 +19,9 @@ export class LoginHandler extends BaseRequestHandler {
     switch (this.req.method) {
       case HTTP_METHODS.POST:
         await this.handlePost();
+        break;
+      case HTTP_METHODS.OPTIONS:
+        this.res.writeHead(HTTP_CODES.OK);
         break;
       default:
         this.handleNotFound();
@@ -43,5 +46,4 @@ export class LoginHandler extends BaseRequestHandler {
       this.res.write('Error: ' + err.message);
     }
   }
-
 }
