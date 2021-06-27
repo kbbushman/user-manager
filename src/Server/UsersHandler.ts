@@ -20,6 +20,9 @@ export class UsersHandler extends BaseRequestHandler {
 
   async handleRequest(): Promise<void> {
     switch (this.req.method) {
+      case HTTP_METHODS.OPTIONS:
+        this.res.writeHead(HTTP_CODES.OK);
+        break;
       case HTTP_METHODS.GET:
         await this.handleGet();
         break;
